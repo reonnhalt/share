@@ -1,0 +1,114 @@
+using System;
+using System.Collections.Generic;
+
+public class MontyHole{
+    public static void Main(){
+        
+        var testCnt = 10000;
+        var m = new Monty();
+        
+        m.test1(testCnt);
+        m.test2(testCnt);
+        
+    }
+    public class Monty
+    {
+        //ランダム選択用
+        private Random random = new Random();
+        
+        //選択候補用
+        private List<bool> candidates = new List<bool> { false, false, false };
+        
+        //選択箇所保存用
+        private List<bool> selected = new List<bool> { false, false, false };
+
+        public void test1(int cnt)
+        {
+            //当たりの回数
+            var suc = 0;
+            
+            for (var i = 0; i < cnt; i++)
+            {
+                //正解の生成
+                var answer = random.Next(3);
+
+                //正解をセット
+                candidates[answer] = true;
+
+                //初期選択
+                var firstSelect = random.Next(3);
+
+                if (candidates[firstSelect])
+                {
+                    suc++;
+                }
+
+                //初期化
+                candidates = candidates.ConvertAll(x => toFalse(x));
+
+            }
+
+            Console.WriteLine("試行回数：" + cnt.ToString() + "回 ->　成功："+suc+"回");
+        }
+        
+        public void test2(int cnt)
+        {
+
+            //当たりの回数
+            var suc = 0;
+
+            for (var i = 0; i < cnt; i++)
+            {
+                //正解の生成
+                var answer = random.Next(3);
+
+                //正解をセット
+                candidates[answer] = true;
+                    
+                //初期選択
+                var firstSelect = random.Next(3);
+
+                //選択済みに変更
+                selected[firstSelect] = true;
+
+                //初期選択以外かつ当たりでは無い物を選択
+                var secondSelect = getSecondSelect(answer,firstSelect);
+
+                //選択済みに変更
+                selected[secondSelect] = true;
+
+                //残った物を選択
+                var endSelect = selected.IndexOf(false);
+
+                if (candidates[endSelect])
+                {
+                    suc++;
+                }
+
+                //初期化
+                candidates = candidates.ConvertAll(x => toFalse(x));
+                selected   = selected.ConvertAll(x => toFalse(x));
+            }
+
+            Console.WriteLine("試行回数：" + cnt.ToString() + "回 ->　成功：" + suc + "回");
+        }
+
+        //二回目の選択
+        private int getSecondSelect(int answer, int first)
+        {
+            while (true)
+            {
+                var select = random.Next(3);
+                if (select != answer && select != first)
+                {
+                    return select;
+                }
+            }
+        }
+
+        private bool toFalse(bool x)
+        {
+            return false;
+        }
+    }
+}

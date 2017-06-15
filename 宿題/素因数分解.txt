@@ -1,0 +1,44 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+public class Prime
+{
+    public static void Main()
+    {
+        
+       int n = 231;
+       var list = PrimeFactorizations(n);
+       Console.Write("[ ");
+       foreach (var i in list)
+       {
+           Console.Write(i.ToString() + " ");
+       }
+       Console.Write("]");
+    }
+    public static List<int> PrimeFactorizations(int n)
+    {
+        return sub(2,n);
+    }
+    public static List<int> sub(int start, int n)
+    {
+        if (start > Math.Sqrt(n))
+        {
+            return new List<int> { n };
+        }
+        else if (n % start == 0)
+        {
+            return Merge(start, sub(start, n / start)).ToList();
+        }
+        else
+        {
+            return sub(start + 1, n);
+        }
+    }
+    public static IEnumerable<int> Merge(int num, List<int> list)
+    {
+        yield return num;
+        foreach (int i in list)
+            yield return i;
+    }
+}
