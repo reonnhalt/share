@@ -1,0 +1,77 @@
+<html>
+    <head>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    </head>
+    <body>
+        <table id="merge" class="table table-bordered table-striped">
+            <thead>
+                <tr class="success">
+                    <th>顧客</th>
+                    <th>オーダーコード</th>
+                    <th>案件名</th>
+                    <th>作業番号</th>
+                    <th>作業種別</th>
+                    <th>etc</th>
+                </tr>
+            </thead>
+            <tbody id="tbody-merge">
+                <tr>
+                    <td>A</td>
+                    <td>111111</td>
+                    <td>test</td>
+                    <td>01</td>
+                    <td>作業種別</td>
+                    <td>etc</td>
+                </tr>
+                <tr>
+                    <td>A</td>
+                    <td>111111</td>
+                    <td>test</td>
+                    <td>01</td>
+                    <td>作業種別</td>
+                    <td>etc</td>
+                </tr>
+                <tr>
+                    <td>A</td>
+                    <td class="total-order" colspan="5">オーダーコード小計</td>
+                </tr>
+                <tr>
+                    <td>A</td>
+                    <td>22222</td>
+                    <td>test2</td>
+                    <td>02</td>
+                    <td>作業種別</td>
+                    <td>etc</td>
+                </tr>
+                <tr>
+                    <td>A</td>
+                    <td>22222</td>
+                    <td>test2</td>
+                    <td>02</td>
+                    <td>作業種別</td>
+                    <td>etc</td>
+                </tr>
+                <tr>
+                    <td>A</td>
+                    <td>22222</td>
+                    <td>test2</td>
+                    <td>02</td>
+                    <td>作業種別</td>
+                    <td>etc</td>
+                </tr>
+                <tr>
+                    <td>A</td>
+                    <td class="total-order" colspan="5">オーダーコード小計</td>
+                </tr>
+                <tr>
+                    <td class="total-client" colspan="6">顧客小計</td>
+                </tr>
+                <tr>
+                    <td class="total-all" colspan="6">総合計</td>
+                </tr>
+            </tbody>
+        </table>
+    </body>
+</html>
