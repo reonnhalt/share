@@ -57,11 +57,11 @@ public class Hello{
         cnt++;
         if (divide * divide > n)
         {
-            return new List<int> { n };
+            return Enumerable.Repeat(n,1).ToList();
         }
         else if (n % divide == 0)
         {
-            return new List<int> { divide }.Concat( sub(divide, primeList, n / divide) ).ToList();
+            return Enumerable.Repeat(divide,1).ToList().Concat(sub(divide, primeList, n / divide)).ToList();
         }
         else
         {
