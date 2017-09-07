@@ -1,0 +1,189 @@
+# Routes
+# This file defines all application routes (Higher priority routes first)
+# ~~~~
+
+# Map static resources from the /public folder to the /assets URL path
+GET     /assets/*file           controllers.Assets.versioned(path="/public", file: Asset)
+
+# Use Bootstrap by WebJars
+GET     /webjars/*file          controllers.WebJarAssets.at(file)
+
+# ログイン
+GET     /                       controllers.LogIn.login
+GET     /Logout                 controllers.LogIn.logout
+POST    /                       controllers.LogIn.authenticate
+
+# 勤怠登録
+GET     /attendance/:employee_number/:year/:month controllers.Attendance.attendance(symbol:String,employee_number:String,year:String,month:String)
+POST    /past_attendance        controllers.Attendance.past_attendance
+POST    /update_attendance      controllers.Attendance.update_attendance
+#POST   /inputSupport           controllers.Attendance.save_default
+POST    /Kinkan/:user_id/:year/:month        controllers.Attendance.upload(user_id:String,year:String,month:String)
+POST    /ImportReport/:user_id/:year/:month  controllers.Attendance.importReport(user_id:String,year:String,month:String)
+POST    /ExportTenDayFile/:year/:month       controllers.Attendance.exportTenDayFile(year:String,month:String)
+POST    /ExportDispatchFile/:year/:month     controllers.Attendance.exportDispatchFile(year:String,month:String)
+POST    /ExportFlexFile/:year/:month         controllers.Attendance.exportFlexTimeFile(year:String,month:String)
+POST    /uploadKinkan/:user_id/:year/:month  controllers.Attendance.uploadKinkan(user_id:String,year:String,month:String)
+
+# バージョン情報
+GET     /Version                  controllers.VersionCheck.versionCheck
+
+# グループ作成
+#GET     /MyGroup               controllers.Manager.showHolidaySummaries
+
+# システム設定
+GET     /:symbol/administrator/:employee_code/system_settings/edit/ controllers.Administrators.systemSettings(symbol: String, employee_code: String)
+
+# JSON
+GET    /json/orders/all/:employee_id/:year/:month controllers.Orders.getAllOrdersInfo(employee_id: Int,year: String,month: String)
+GET    /json/orders/cadidates/:employee_id/:start_date/:end_date  controllers.Orders.getOrderCandidates(employee_id: Int,start_date: String,end_date: String)
+GET    /json/orders/info/:order_id          controllers.Orders.getOrderInfo(order_id: Int)
+GET    /json/orders/allocate/:order_id      controllers.Orders.getOrderAllocate(order_id: Int)
+GET    /json/work_types/all                 controllers.WorkTypes.getAllWorkTypes
+GET    /json/work_types/tooltip             controllers.WorkTypes.getWorkNumberTooltip
+GET    /json/note/candidates/:employee_id   controllers.Note.getNoteCandidates(employee_id: Int)
+
+# タイプ別
+GET     /json/types/role_allocation         controllers.Types.getRoleAllocation
+GET     /json/types/internal_division       controllers.Types.getInternalDivision
+GET     /json/types/employee_type           controllers.Types.getEmployeeType
+GET     /json/types/company_list            controllers.Types.getCompanyList
+GET     /json/types/company_detail          controllers.Types.getCompanyDetail
+GET     /json/types/temporary_list          controllers.Types.getTemporaryList
+
+# 派遣会社登録
+GET     /business/company_edit              controllers.CompanyEdit.show
+POST    /business/company_edit              controllers.CompanyEdit.submit
+POST    /business/company_edit_new          controllers.CompanyEdit.register
+POST    /json/business/company_update       controllers.CompanyEdit.update
+
+# 派遣社員登録
+GET     /business/temporary_edit            controllers.TemporaryEdit.show
+POST    /business/temporary_edit            controllers.TemporaryEdit.submit
+POST    /json/business/temporary_update     controllers.TemporaryEdit.update
+
+# ユーザ編集
+GET     /business/user_edit                 controllers.EmployeeUserEdit.show
+POST    /business/user_edit                 controllers.EmployeeUserEdit.submit
+POST    /business/user_edit_new             controllers.EmployeeUserEdit.register
+POST    /json/business/user_update          controllers.EmployeeUserEdit.update
+GET     /json/business/userlist             controllers.EmployeeUserEdit.get
+
+# グループ作成
+GET     /manager/manage_user_edit           controllers.ManageUserEdit.read
+POST    /manager/manage_user_edit           controllers.ManageUserEdit.submit
+POST    /json/manager/manage_user_edit      controllers.ManageUserEdit.update
+GET     /json/manager/userlist              controllers.ManageUserEdit.getUserList
+GET     /json/manager/managelist/:user_id   controllers.ManageUserEdit.getManageList(user_id:String)
+GET     /json/manager/managelist            controllers.ManageUserEdit.getList
+
+# オーダーコード登録
+GET     /manager/order_code_edit            controllers.OrderCodeEdit.read
+POST    /manager/order_code_edit            controllers.OrderCodeEdit.update
+
+# グループ作成
+GET     /manager/holiday_summary            controllers.HolidaySummary.show
+
+# 休日一覧
+GET     /manager/holiday_summary            controllers.HolidaySummary.show
+POST    /manager/holiday_summary            controllers.HolidaySummary.show
+GET     /json/manager/holiday/:user/:year   controllers.HolidaySummary.get(user:String,year:String)
+GET     /json/manager/holiday/:year         controllers.HolidaySummary.getAll(year:String)
+
+# 残業一覧
+GET     /manager/overtime_summary           controllers.OverTimeSummary.show
+POST    /manager/overtime_summary           controllers.OverTimeSummary.show
+GET     /json/manager/overtime/:user/:from/:to controllers.OverTimeSummary.getOverTime(user:String,from:String,to:String)
+GET     /json/manager/exholiday/:from/:to   controllers.OverTimeSummary.getExchangeHoliday(from:String,to:String)
+
+GET     /json/manager/allovertime/:from/:to controllers.OverTimeSummary.getAllOverTime(from:String,to:String)
+
+# 旬報書類管理
+GET     /manager/output_document            controllers.OutputDocument.show
+POST    /manager/output_document            controllers.OutputDocument.show
+GET     /downloads/:file                    controllers.OutputDocument.download(file)
+GET     /json/manager/output_document       controllers.OutputDocument.get
+
+# 個人情報表示
+GET     /user/personal_setting              controllers.PersonalSetting.read
+POST    /user/personal_setting              controllers.PersonalSetting.update
+
+# 備考欄登録
+GET     /user/option_setting                controllers.PersonalOption.read
+GET     /json/user/defaulttime              controllers.PersonalOption.get
+POST    /user/option_setting/time_edit      controllers.PersonalOption.updateTime
+POST    /user/option_setting/note_edit      controllers.PersonalOption.updateNote
+POST    /user/option_setting/note_del       controllers.PersonalOption.deleteNote
+
+# オーダーコード選択(個人設定)
+GET     /user/order_code_select             controllers.OrderCodeSelect.read
+POST    /user/order_code_select             controllers.OrderCodeSelect.submit
+POST    /json/user/order_code_edit          controllers.OrderCodeSelect.update
+GET     /json/user/clientlist               controllers.OrderCodeSelect.getClientList
+GET     /json/user/orderlist                controllers.OrderCodeSelect.getOrderList
+GET     /json/user/myorderlist/:user_id     controllers.OrderCodeSelect.getMyOrderList(user_id: String)
+
+# 休日一覧(個人)
+GET     /user/holiday_setting               controllers.HolidaySetting.show
+POST    /user/holiday_setting               controllers.HolidaySetting.show
+POST    /user/holiday_setting_submit        controllers.HolidaySetting.submit
+POST    /json/user/holiday_edit             controllers.HolidaySetting.update
+GET     /json/user/holiday/:user_id/:year   controllers.HolidaySetting.getHoliday(user_id: String,year:String)
+GET     /json/user/daytype/:user_id/:year   controllers.HolidaySetting.getHolidayType(user_id: String,year:String)
+GET     /json/user/detail/:user_id/:year    controllers.HolidaySetting.getHolidayDatails(user_id: String,year:String)
+
+# 指定休情報登録
+#GET     /:symbol/personal_setting/:employee_number/holiday_schedules/edit/:year controllers.DesignatedHolidays.showHolidays(symbol:String,employee_number:String,year:String)
+#POST    /ChooseFiscalYear                                                       controllers.DesignatedHolidays.selectFiscalYear
+#POST    /SaveHolidays/:year/:start_date/:end_date                               controllers.DesignatedHolidays.chooseRelaxHoliday(year:String,start_date:String,end_date:String)
+
+
+# 集計一覧エクセル出力
+GET     /manager/aggregateExcel/:period        controllers.AggregateFile.show(period:String)
+POST     /manager/aggregateExcelShow           controllers.AggregateFile.show_data
+POST    /manager/aggregateExcel                controllers.AggregateFile.getAggList
+POST    /manager/getACOS_aggregateExcel        controllers.AggregateFile.getACOS
+GET     /json/manager/aggregateExcel/:from     controllers.AggregateFile.getFiles(from:String)
+
+#sortableプラグインのテスト
+GET     /sortable  controllers.Sortable.show
+
+#部門別集計表示
+GET     /aggregate/departments                    controllers.aggregate.Departments.show
+POST    /aggregate/departments                    controllers.aggregate.Departments.show
+GET     /aggregate/departments/summary            controllers.aggregate.Departments.export()
+POST    /aggregate/departments/summary            controllers.aggregate.Departments.export()
+GET     /aggregate/departments/summary_work       controllers.aggregate.Departments.exportWork()
+POST    /aggregate/departments/summary_work       controllers.aggregate.Departments.exportWork()
+
+#部門別集計のJsonデータ
+GET     /json/aggregate/departments/:year  controllers.aggregate.Departments.getData(year:String)
+GET     /json/aggregate/orders/:year       controllers.aggregate.Departments.getOrderData(year:String)
+
+#カスタムグループ
+GET   /manager/group_edit       controllers.GroupContrller.show
+POST  /manager/group_update     controllers.GroupContrller.update
+GET   /json/manager/group_info  controllers.GroupContrller.getInfo
+
+# 区分順番編集
+GET     /business/category_setting         controllers.CategorySetting.show
+GET     /json/business/category_list        controllers.CategorySetting.get
+POST    /json/business/category_list          controllers.CategorySetting.update
+
+#作業番号
+GET   /json/work_number/usability  controllers.WorkTypes.getUsability
+
+#タイムカード
+GET   /timecard/edit/:employee_number/:year/:month controllers.TimeCardController.show(symbol:String,employee_number:String,year:String,month:String)
+POST  /timecard/change_date      controllers.TimeCardController.changeDate
+GET   /timecard/chart/individual controllers.TimeCardController.showChart
+GET   /timecard/chart/together   controllers.TimeCardController.showTogether
+
+GET   /json/timecard/info/date    controllers.TimeCardController.getInfoByDate
+
+POST  /timecard/list             controllers.TimeCardController.getList
+POST  /timecard/arrival/update   controllers.TimeCardController.updateArrival
+POST  /timecard/leave/update     controllers.TimeCardController.updateLeave
+
+#メール機能のテスト
+GET   /test/mail  controllers.MailerService.show

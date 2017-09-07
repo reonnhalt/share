@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <title>Hello World</title>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.6.1/react.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.6.1/react-dom.js"></script>
+        <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+    </head>
+    <!-- 
+        SPE社員全員が使用可能な採番システムを作る。
+        （immutableであるかどうかは問わないが、immutableであるとなお良い。CUIでも良い）
+        採番される番号フォーマットは”SPESXX-YYY”とする。
+        ただし、
+        ・SPES：文字列固定
+        ・XX：西暦の下2桁（2桁のゼロプレースホルダー）
+        ・-：文字固定
+        ・YYY：1からの連番（3桁のゼロプレースホルダー）
+        とする。
+        なお、DBは使用しない。
+    -->
+    <body>
+        <div id="root"></div>
+        <script type="text/babel">
+            class AssignmentNumber extends React.Component {
+                constructor(props) {
+                    super(props);
+                    this.state = { number: 0}
+                    this.handleClick = this.handleClick.bind(this);
+                    this.setReadState = this.setReadState.bind(this);
+                }
+                componentWillMount(){
+                    const xhr = new XMLHttpRequest();
+                    const path = "./json/number.json";
+                    xhr.open("GET", path, true);
+                    xhr.onreadystatechange = this.setReadState
+                    xhr.send(); 
+                }
+                setReadState(e){
+                    const DONE = 4;
+                    if(e.currentTarget.readyState == DONE){
+                        this.setState( () => { return { number: JSON.parse(e.target.responseText).number }; });
+                    }
+                }
+                handleClick(){
+                    this.setState( () => { return { number: this.state.number + 1 }; });
+                    // 書き込み
+                    document.getElementById("send-form").submit();
+                }
+                render() {
+                    // ゼロパディング
+                    const zeroPadding = (num, len) => {
+                        return ( Array(len).join('0') + num ).slice( len * -1 );
+                    }
+                    // 年度返却
+                    const getYear = () => {
+                        return "17"
+                    }
+                    // 整形
+                    const formatter = (x) => {
+                        return "SPES" + getYear() + "-" + zeroPadding(x, 3)
+                    }
+                    return (
+                        <div>
+                            <button onClick={() => this.handleClick() } >採番</button>
+                            <p>{formatter(this.state.number)}</p>
+                            <form id="send-form" method="post" action="./cgi-bin/write_file.py">
+                                <input type="hidden" name="number" value={this.state.number + 1}></input>
+                            </form>
+                        </div>
+                    );
+                }
+            };
+            ReactDOM.render(
+                <AssignmentNumber/>,
+                document.getElementById('root')
+            );
+        </script>
+    </body>
+</html>
